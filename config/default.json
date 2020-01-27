@@ -1,0 +1,5 @@
+{
+    "port": 4000,
+    "dbLink":"mongodb+srv://Dipashri:dipa@firstcluster-wukuh.mongodb.net/Authorization",
+    "jwtKey":"secretKey"
+}
