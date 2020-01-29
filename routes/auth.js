@@ -3,6 +3,8 @@ const router = express.Router();
 const { User } = require("../models/userSchema");
 const { Authenticate_JWT_Token, generateJWT } = require("../middleware/jwt");
 const { decryptPass } = require("../middleware/bcryption");
+const tokenList = {}
+
 
 // LoGIN API
 router.post("/login", async (req, res) => {
@@ -25,11 +27,14 @@ router.post("/login", async (req, res) => {
       message: "Invalid Password"
     });
   }
-  let token = await generateJWT(userDetails);
+  let response = await generateJWT(userDetails);
+  tokenList[response.refreshToken] = response
+  console.log(tokenList)
+
   return res.status(200).json({
     status: 200,
     message: "Successfully Log in",
-    token: token
+    token: response
   });
 });
 

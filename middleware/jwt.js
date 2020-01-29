@@ -2,13 +2,17 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 
 generateJWT = async data => {
-  let token = await jwt.sign(data, config.get("jwtKey"));
-  return token;
+  let token = await jwt.sign(data, config.get("jwtKey"),{expiresIn:config.get("tokenLife")});
+  let refreshToken = await jwt.sign(data,config.get("refreshjwtKey"))
+  const response = {
+    "token": token,
+    "refreshToken": refreshToken,
+}
+  return response;
 };
 
 Authenticate_JWT_Token = async (req, res, next) => {
   const token = req.headers["jwt-token"];
-  //  console.log(token);
   if (!token) {
     console.log("Access denied. No token provided !");
     return res.json({
